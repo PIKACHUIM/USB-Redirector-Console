@@ -1,0 +1,149 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main, master]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '发布版本号 (如 v1.0.0)'
+        required: false
+        default: ''
+      release_type:
+        description: '发布类型'
+        required: true
+        type: choice
+        options:
+          - beta (Pre-release)
+          - stable (Release)
+        default: 'beta (Pre-release)'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_stable: ${{ steps.version.outputs.is_stable }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        shell: pwsh
+        run: |
+          $inputVersion = "${{ github.event.inputs.version }}"
+          $releaseType = "${{ github.event.inputs.release_type }}"
+          $isPush = "${{ github.event_name }}" -eq "push"
+
+          if ($inputVersion) {
+            $ver = $inputVersion
+          } elseif ($isPush) {
+            # 自动构建用短 SHA 作为版本
+            $ver = "ci-$('${{ github.sha }}'.Substring(0, 7))"
+          } else {
+            $ver = "ci-$('${{ github.sha }}'.Substring(0, 7))"
+          }
+
+          if ($releaseType -match 'stable') {
+            $isStable = 'true'
+          } else {
+            $isStable = 'false'
+          }
+
+          Write-Host "Version: $ver, Stable: $isStable"
+          "version=$ver" >> $env:GITHUB_OUTPUT
+          "is_stable=$isStable" >> $env:GITHUB_OUTPUT
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller pystray Pillow
+
+      - name: Build single-file exe
+        run: |
+          pyinstaller `
+            --onefile `
+            --windowed `
+            --name "USBRedirector" `
+            --icon "${{ github.workspace }}/icon.ico" `
+            --add-data "${{ github.workspace }}/etd;etd" `
+            --add-data "${{ github.workspace }}/usb;usb" `
+            --add-data "${{ github.workspace }}/config.ini;." `
+            --add-data "${{ github.workspace }}/icon.png;." `
+            --manifest "${{ github.workspace }}/app.manifest" `
+            --distpath "${{ github.workspace }}/dist" `
+            --workpath "${{ github.workspace }}/build_temp" `
+            "${{ github.workspace }}/main.py"
+
+      - name: Verify artifact
+        run: |
+          if (Test-Path ${{ github.workspace }}/dist/USBRedirector.exe) {
+            $size = (Get-Item ${{ github.workspace }}/dist/USBRedirector.exe).Length / 1MB
+            Write-Host "USBRedirector.exe built successfully ($([math]::Round($size, 1)) MB)"
+          } else {
+            Write-Error "Build output not found!"
+            exit 1
+          }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: USBRedirector-${{ steps.version.outputs.version }}
+          path: ${{ github.workspace }}/dist/USBRedirector.exe
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: USBRedirector-${{ needs.build.outputs.version }}
+          path: dist
+
+      - name: Publish to Beta (Pre-release)
+        if: needs.build.outputs.is_stable == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: beta
+          name: Beta (${{ needs.build.outputs.version }})
+          body: |
+            ## Beta 构建
+
+            > **版本**: ${{ needs.build.outputs.version }}
+            > **构建时间**: ${{ github.event.head_commit.timestamp || '手动触发' }}
+            > **分支**: ${{ github.ref_name }}
+            > **提交**: ${{ github.event.head_commit.message || 'N/A' }}
+
+            自动构建的预发布版本，用于测试。
+          prerelease: true
+          files: dist/USBRedirector.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Stable (Release)
+        if: needs.build.outputs.is_stable == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build.outputs.version }}
+          name: ${{ needs.build.outputs.version }}
+          body: |
+            ## ${{ needs.build.outputs.version }}
+
+            > **构建时间**: ${{ github.event.head_commit.timestamp || '手动触发' }}
+            > **分支**: ${{ github.ref_name }}
+
+            正式发布版本。
+          prerelease: false
+          files: dist/USBRedirector.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

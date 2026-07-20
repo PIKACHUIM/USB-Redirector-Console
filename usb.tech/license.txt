@@ -1,0 +1,95 @@
+SimplyCore LLC - USB Redirector Technician Edition
+End User License Agreement
+
+NOTICE TO USERS:
+PLEASE CAREFULLY READ THE FOLLOWING LEGAL AGREEMENT. BY INSTALLING THIS SOFTWARE
+YOU ACCEPT ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE 
+TO THE TERMS OF THIS AGREEMENT, PLEASE DO NOT INSTALL AND/OR USE THIS SOFTWARE.
+
+This version of USB Redirector Technician Edition including the 
+software and its related user documentation (the SOFTWARE), is owned by 
+SimplyCore LLC, and is protected by copyright laws and international copyright 
+treaties, as well as other intellectual property laws and treaties.
+
+USB Redirector is "try-before-you-buy" software. That means that the user can 
+evaluate product's usefulness and functionality before making a purchase. 
+Therefore there is no refund policy for any purchase of this product.
+
+Unregistered copies of the SOFTWARE shall only be used for evaluation purposes 
+during trial period. You may distribute the unregistered copies of the SOFTWARE 
+freely without charge as long as it remains whole including but not limited to 
+existing copyright notices, installation and setup utilities, help files, 
+licensing agreements, run-time libraries, etc. and DOES NOT CONTAIN either valid
+ serial numbers, illegal serial numbers, or any other serial numbers.
+
+1. LICENSE GRANT. SimplyCore LLC grants you a license to use one copy of the 
+version of this SOFTWARE on any one system for as many licenses as you purchase.
+"You" means the company, entity or individual whose funds are used to pay the 
+license fee. "Use" means storing, loading, installing,executing or displaying 
+the SOFTWARE. You may not modify the SOFTWARE or disable any licensing or 
+control features of the SOFTWARE except as an intended part of the SOFTWARE's 
+programming features. You may NOT change the system date while using the 
+evaluation version of the SOFTWARE. This will cause the termination of the 
+evaluation period. You may NOT decompile, disassemble, otherwise reverse 
+engineer the SOFTWARE, or any part of it. Any such unauthorized use shall 
+result in immediate and automatic termination of this license and may result in
+criminal and/or civil prosecution. When you first obtain a copy of the 
+SOFTWARE, you are granted an evaluation period of not more than 15 days, after 
+which time you must pay for the SOFTWARE according to the terms and prices 
+discussed in the SOFTWARE's documentation, or you must remove the SOFTWARE from
+your system.
+
+This license is not transferable to any other system, or to another organization
+or individual. You are expected to use the SOFTWARE on your system and to 
+evaluate product's usefulness and functionality before making a purchase.
+
+2. LIMITATIONS. Unregistered copies of the SOFTWARE shall only be used for 
+evaluation purposes, any commercial use of such copies is not allowed under this
+Agreement.
+
+3. OWNERSHIP. The SOFTWARE is owned and copyrighted by SimplyCore LLC. Your 
+license confers no title or ownership in the SOFTWARE and should not be 
+construed as a sale of any right in the SOFTWARE.
+
+4. COPYRIGHT. The SOFTWARE is protected by copyright laws and international 
+treaty provisions. You acknowledge that no title to the intellectual property 
+in the SOFTWARE is transferred to you. You further acknowledge that title and 
+full ownership rights to the SOFTWARE will remain the exclusive property of 
+SimplyCore LLC and you will not acquire any rights to the SOFTWARE except as 
+expressly set forth in this license. You agree that any copies of the SOFTWARE 
+will contain the same proprietary notices which appear on and in the SOFTWARE.
+
+5. REVERSE ENGINEERING. You agree that you will not attempt to reverse compile,
+modify, translate, or disassemble the SOFTWARE in whole or in part.
+
+6. SUPPORT. Technical support is available from SimplyCore LLC or its authorized
+resellers under their standard support policies for those who have purchased
+licenses for the SOFTWARE.
+
+7. NO OTHER WARRANTIES. The Software is provided "as is" without warranty of any
+kind. SimplyCore LLC expressly disclaims all implied warranties, included but 
+not limited to the implied warranties of merchantability and fitness for a 
+particular purpose. SimplyCore LLC does not guarantee the Software or any 
+accompanying materials in terms of their correctness, accuracy, reliability, or
+otherwise. The entire risk as to the results and performance of the Software 
+and written materials is assumed by you.
+
+8. NO LIABILITY FOR CONSEQUENTIAL DAMAGES IN NO EVENT SHALL SimplyCore LLC, ITS
+EMPLOYEES OR ITS PARTNERS BE LIABLE TO YOU FOR ANY CONSEQUENTIAL, SPECIAL, 
+INCIDENTAL OR INDIRECT DAMAGES OF ANY KIND ARISING OUT OF THE DELIVERY, 
+PERFORMANCE OR USE OF THE SOFTWARE, EVEN IF SimplyCore LLC HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES. IN NO EVENT WILL SimplyCore LLC LIABILITY FOR
+ANY CLAIM, WHETHER IN CONTRACT, TORT OR ANY OTHER THEORY OF LIABILITY, EXCEED
+THE LICENSE FEE PAID BY YOU, IF ANY.
+
+9. TERMINATION. This agreement shall automatically terminate upon failure by you 
+to comply with its terms.
+
+10. ENTIRE AGREEMENT. This is the entire agreement between you and SimplyCore LLC 
+which supersedes any prior agreement or understanding, whether written or oral, 
+relating to the subject matter of this license.
+
+SimplyCore LLC reserves all rights not expressly granted here.
+
+
+

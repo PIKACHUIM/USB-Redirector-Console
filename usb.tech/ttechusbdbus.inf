@@ -1,0 +1,81 @@
+;
+; Virtual USB Bus Driver
+;
+
+;--------- Version Section ---------------------------------------------------
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%Provider%
+DriverVer=08/08/2019,11.9.7.3130
+CatalogFile=ttechusbdbus.cat
+
+;--------- Manufacturer and Models Sections ----------------------------------
+
+[Manufacturer]
+%MfgName%=ttechusbdbus_Mfg,NT,NTamd64
+
+[ttechusbdbus_Mfg.NT]
+%ttechusbdbus_DeviceDescription%=ttechusbdbus_DDI,*ttechusbdbusDevice
+%ttechusbdhc_DeviceDescription%=ttechusbdbus_DDI,*ttechusbdhcDevice
+
+[ttechusbdbus_Mfg.NTamd64]
+%ttechusbdbus_DeviceDescription%=ttechusbdbus_DDI,*ttechusbdbusDevice
+%ttechusbdhc_DeviceDescription%=ttechusbdbus_DDI,*ttechusbdhcDevice
+
+
+;--------- DestinationDirs Section -------------------------------------------
+
+[DestinationDirs]
+DefaultDestDir=12
+
+;--------- SourceDiskNames and SourceDiskFiles Section -----------------------
+; These sections identify source disks and files for installation.
+
+[SourceDisksNames]
+1=%DiskId1%,,,""
+
+[SourceDisksFiles]
+ttechusbdbus.sys=1,x86,
+
+[SourceDisksFiles.amd64]
+ttechusbdbus.sys=1,amd64,
+
+;---------- Device Driver Install Sections -----------------------------------
+
+[ttechusbdbus_DDI.NT]
+CopyFiles=ttechusbdbus_Files_Driver
+
+[ttechusbdbus_DDI.NT.Services]
+AddService=ttechusbdbus,2,ttechusbdbus_Service ; SPSVCINST_ASSOCSERVICE
+
+[ttechusbdbus_DDI.NTAmd64]
+CopyFiles=ttechusbdbus_Files_Driver
+
+[ttechusbdbus_DDI.NTAmd64.Services]
+AddService=ttechusbdbus,2,ttechusbdbus_Service ; SPSVCINST_ASSOCSERVICE
+
+[ttechusbdbus_Service]
+DisplayName=%ttechusbdbus_ServiceDisplayName%
+Description=%ttechusbdbus_ServiceDescription%
+ServiceType=1 ; SERVICE_KERNEL_DRIVER
+StartType=3 ; SERVICE_DEMAND_START
+ErrorControl=1 ; SERVICE_ERROR_NORMAL
+ServiceBinary=%12%\ttechusbdbus.sys
+LoadOrderGroup=Extended Base
+
+[ttechusbdbus_Files_Driver]
+ttechusbdbus.sys,,,2
+
+;--------- Localizable Strings Section ---------------------------------------
+
+[Strings]
+Provider = "SimplyCore LLC"
+MfgName = "SimplyCore LLC"
+ttechusbdbus_DeviceDescription="USB Redirector Technician Edition Virtual USB Hub"
+ttechusbdhc_DeviceDescription="USB Redirector Technician Edition Virtual USB Host Controller"
+ttechusbdbus_ServiceDisplayName="USB Redirector Technician Edition Virtual USB Bus Driver"
+ttechusbdbus_ServiceDescription="This driver helps to redirect remote USB devices to this computer"
+DiskId1="USB Redirector Technician Edition Virtual USB Bus Driver Installation Disk"

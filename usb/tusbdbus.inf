@@ -1,0 +1,81 @@
+;
+; Virtual USB Bus Driver
+;
+
+;--------- Version Section ---------------------------------------------------
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%Provider%
+DriverVer=01/06/2021,6.12.0.3230
+CatalogFile=tusbdbus.cat
+
+;--------- Manufacturer and Models Sections ----------------------------------
+
+[Manufacturer]
+%MfgName%=tusbdbus_Mfg,NT,NTamd64
+
+[tusbdbus_Mfg.NT]
+%tusbdbus_DeviceDescription%=tusbdbus_DDI,*tusbdbusDevice
+%tusbdhc_DeviceDescription%=tusbdbus_DDI,*tusbdhcDevice
+
+[tusbdbus_Mfg.NTamd64]
+%tusbdbus_DeviceDescription%=tusbdbus_DDI,*tusbdbusDevice
+%tusbdhc_DeviceDescription%=tusbdbus_DDI,*tusbdhcDevice
+
+
+;--------- DestinationDirs Section -------------------------------------------
+
+[DestinationDirs]
+DefaultDestDir=12
+
+;--------- SourceDiskNames and SourceDiskFiles Section -----------------------
+; These sections identify source disks and files for installation.
+
+[SourceDisksNames]
+1=%DiskId1%,,,""
+
+[SourceDisksFiles]
+tusbdbus.sys=1,x86,
+
+[SourceDisksFiles.amd64]
+tusbdbus.sys=1,amd64,
+
+;---------- Device Driver Install Sections -----------------------------------
+
+[tusbdbus_DDI.NT]
+CopyFiles=tusbdbus_Files_Driver
+
+[tusbdbus_DDI.NT.Services]
+AddService=tusbdbus,2,tusbdbus_Service ; SPSVCINST_ASSOCSERVICE
+
+[tusbdbus_DDI.NTAmd64]
+CopyFiles=tusbdbus_Files_Driver
+
+[tusbdbus_DDI.NTAmd64.Services]
+AddService=tusbdbus,2,tusbdbus_Service ; SPSVCINST_ASSOCSERVICE
+
+[tusbdbus_Service]
+DisplayName=%tusbdbus_ServiceDisplayName%
+Description=%tusbdbus_ServiceDescription%
+ServiceType=1 ; SERVICE_KERNEL_DRIVER
+StartType=3 ; SERVICE_DEMAND_START
+ErrorControl=1 ; SERVICE_ERROR_NORMAL
+ServiceBinary=%12%\tusbdbus.sys
+LoadOrderGroup=Extended Base
+
+[tusbdbus_Files_Driver]
+tusbdbus.sys,,,2
+
+;--------- Localizable Strings Section ---------------------------------------
+
+[Strings]
+Provider = "SimplyCore LLC"
+MfgName = "SimplyCore LLC"
+tusbdbus_DeviceDescription="USB Redirector Virtual USB Hub"
+tusbdhc_DeviceDescription="USB Redirector Virtual USB Host Controller"
+tusbdbus_ServiceDisplayName="USB Redirector Virtual USB Bus Driver"
+tusbdbus_ServiceDescription="This driver helps to redirect remote USB devices to this computer"
+DiskId1="USB Redirector Virtual USB Bus Driver Installation Disk"
