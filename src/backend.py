@@ -90,7 +90,12 @@ class EasyTierManager:
                "--network-name", self.config.get_network_name(),
                "--network-secret", self.config.get_network_password(),
                "--no-listener"]
-        if is_server: cmd.insert(1, "10.254.254.1/24"); cmd.insert(1, "--ipv4")
+        if is_server:
+            ip = self.config.get_listen_ip()
+            if ip and ip.lower() not in ("random", "dhcp"):
+                cmd.insert(1, ip); cmd.insert(1, "--ipv4")
+            else:
+                cmd.insert(1, "10.254.254.1/24"); cmd.insert(1, "--ipv4")
         else:
             ip = self.config.get_listen_ip()
             if ip and ip.lower() not in ("random", "dhcp"): cmd.insert(1, ip); cmd.insert(1, "--ipv4")

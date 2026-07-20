@@ -92,9 +92,21 @@ class AdvancedSettingsDialog(tk.Toplevel):
                         command=self._toggle_password_visibility).grid(
             row=r, column=1, sticky=tk.W, pady=2, padx=(10, 0)); r += 1
 
+        ttk.Label(form, text="虚拟IP:").grid(row=r, column=0, sticky=tk.W, pady=5)
+        ip_frame = ttk.Frame(form)
+        ip_frame.grid(row=r, column=1, sticky=tk.W, pady=5, padx=(10, 0))
         self.ip_var = tk.StringVar()
-        self._entry_row(form, "虚拟IP(CIDR):", r, self.ip_var, width=35,
-                        hint="(留空或 dhcp=自动获取)"); r += 1
+        self.ip_entry = ttk.Entry(ip_frame, textvariable=self.ip_var, width=20)
+        self.ip_entry.pack(side=tk.LEFT)
+        ttk.Label(ip_frame, text="  /").pack(side=tk.LEFT)
+        self.cidr_var = tk.StringVar()
+        self.cidr_entry = ttk.Entry(ip_frame, textvariable=self.cidr_var, width=5)
+        self.cidr_entry.pack(side=tk.LEFT)
+        ttk.Label(ip_frame, text="  (dhcp=自动获取)", foreground="gray").pack(side=tk.LEFT, padx=(4, 0))
+        if self.readonly:
+            self.ip_entry.configure(state="readonly")
+            self.cidr_entry.configure(state="readonly")
+        r += 1
 
         self.enable_et_var = tk.BooleanVar()
         cb = ttk.Checkbutton(form, text="启用 EasyTier 组网 (禁用时使用现有网络)",
@@ -170,7 +182,15 @@ class AdvancedSettingsDialog(tk.Toplevel):
         self.server_var.set(self.config.get_server())
         self.name_var.set(self.config.get_network_name())
         self.pass_var.set(self.config.get_network_password())
-        self.ip_var.set(self.config.get_listen_ip())
+        # 拆开 IP 和 CIDR
+        raw = self.config.get_listen_ip() or ""
+        if "/" in raw:
+            parts = raw.split("/", 1)
+            self.ip_var.set(parts[0])
+            self.cidr_var.set(parts[1])
+        else:
+            self.ip_var.set(raw)
+            self.cidr_var.set("24")
         self.enable_et_var.set(self.config.get_enable_easytier())
 
         # 服务端
@@ -196,7 +216,13 @@ class AdvancedSettingsDialog(tk.Toplevel):
         self.config.set_server(self.server_var.get().strip())
         self.config.set_network_name(self.name_var.get().strip())
         self.config.set_network_password(self.pass_var.get().strip())
-        self.config.set_listen_ip(self.ip_var.get().strip())
+        # 合并 IP + CIDR 存为 IP/CIDR 格式
+        ip = self.ip_var.get().strip()
+        cidr = self.cidr_var.get().strip() or "24"
+        if ip and ip.lower() not in ("random", "dhcp"):
+            self.config.set_listen_ip(f"{ip}/{cidr}")
+        else:
+            self.config.set_listen_ip(ip or "dhcp")
         # enable_easytier 同时写入 server 和 client 两个段
         et = self.enable_et_var.get()
         self.config.config.set("server", "enable_easytier", str(et).lower())
