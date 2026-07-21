@@ -22,6 +22,9 @@ on:
           - stable (Release)
         default: 'beta (Pre-release)'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
